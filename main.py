@@ -18,7 +18,7 @@ if __name__ == '__main__':
     triple = []
     ciclo = []
     nomeFile = raw_input("Inserire il nome dell'istanza che si vuole utilizzare da A1 a N6 \n")
-    vecX, vecY = LeggiIstanze("/home/paola/eclipse-workspace/ProgettoRO/Istanze/" + nomeFile + ".txt")
+    vecX, vecY = LeggiIstanze("./Istanze/" + nomeFile + ".txt")
     print "vecX =", vecX
     print "vecY =", vecY
 
