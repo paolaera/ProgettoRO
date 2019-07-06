@@ -70,17 +70,16 @@ def calcolaMatriceSavings(Nodi):
     saving = numpy.array(saving)
     return saving
 
-"""
-def creazioneTriple(saving, vecX):
+
+def creazioneTriple(saving, Nodi):
     triple = []
-    for i in range(len(vecX) - 1):
-        for j in range(len(vecX) - 1):
+    for i in range(len(Nodi) - 1):
+        for j in range(len(Nodi) - 1):
             a = [saving[i][j], i, j]
             triple.append(a)
-    print 'triple=', triple
     return triple
 
-
+""" 
 # creazione di tutti i cicli che partono dal deposito e vanno in un solo nodo
 def creazioneCicliSingoli(vecX):
     ciclo = []

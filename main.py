@@ -23,10 +23,9 @@ if __name__ == '__main__':
 
 
 
-    """
-    triple = creazioneTriple(saving, vecX)
-    print 'Triple prima =', triple
+
+    triple = creazioneTriple(Saving, Nodi)
     triple.sort(key=operator.itemgetter(0), reverse=True)
-    print 'triple dopo =', triple
+    triple = triple[:len(triple)-len(Nodi)+1]
     # ciclo=creazioneCicliSingoli(vecX)
-    """
+
