@@ -14,14 +14,14 @@ class Nodo:
 
     def __init__(self):
         pass
-
+    """
     def __init__(self, coordX, coordY, linehaul, backhaul,indice):
         self.coordX = coordX
         self.coordY = coordY
         self.linehaul = linehaul
         self.backhaul = backhaul
         self.indice = indice
-
+    """
     def setCoordX(self,coordX):
         self.coordX = coordX
 

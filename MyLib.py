@@ -7,7 +7,7 @@ Created on 29 mag 2019
 import math
 from math import sqrt
 import numpy
-import Nodo
+from Nodo import *
 
 
 def LeggiIstanze(NomeFile):
@@ -17,7 +17,7 @@ def LeggiIstanze(NomeFile):
     istanza.readline()
     istanza.readline()
     for i in range(int(numc) + 1):
-        nodoAttuale=Nodo()
+        nodoAttuale = Nodo()
         mys = istanza.readline()
         mysplit = pul_split(mys)
 
@@ -45,33 +45,32 @@ def pul_split(l):
 
 
 # Funzione per la creazione e riempimento della matrice delle distanze
-def calcolaMatriceDistanze(vecX, vecY):
+def calcolaMatriceDistanze(Nodi):
     matrice = []
-    for i in range(len(vecX)):
+    for i in range(len(Nodi)):
         rig = []
-        for j in range(len(vecX)):
-            rig.append(sqrt((vecX[i] - vecX[j]) ** 2 + (vecY[i] - vecY[j]) ** 2))
+        for j in range(len(Nodi)):
+            rig.append(sqrt((Nodi[i].getCoordX() - Nodi[j].getCoordX()) ** 2 + (Nodi[i].getCoordY() - Nodi[j].getCoordY()) ** 2))
         matrice.append(rig)
     return matrice
 
 
 # Funzione per la creazione e riempimento della matrice dei saving
-def calcolaMatriceSavings(vecX, vecY):
-    matrice = calcolaMatriceDistanze(vecX, vecY)
+def calcolaMatriceSavings(Nodi):
+    matrice = calcolaMatriceDistanze(Nodi)
     saving = []
-    for i in range(1, len(vecX)):
+    for i in range(1, len(Nodi)):
         rig = []
-        for j in range(1, len(vecX)):
+        for j in range(1, len(Nodi)):
             if i != j:
                 rig.append(matrice[0][i] + matrice[0][j] - matrice[i][j])
             else:
                 rig.append(0.0)
         saving.append(rig)
     saving = numpy.array(saving)
-    # print "matrice =",matrice
     return saving
 
-
+"""
 def creazioneTriple(saving, vecX):
     triple = []
     for i in range(len(vecX) - 1):
@@ -92,6 +91,6 @@ def creazioneCicliSingoli(vecX):
     return ciclo
 
 
-
+"""
 
 
