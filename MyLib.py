@@ -15,7 +15,7 @@ def LeggiIstanze(NomeFile):
     istanza = open(NomeFile, "r")
     numc = istanza.readline()
     istanza.readline()
-    istanza.readline()
+    camion = int(istanza.readline())
     for i in range(int(numc) + 1):
         nodoAttuale = Nodo()
         mys = istanza.readline()
@@ -24,6 +24,7 @@ def LeggiIstanze(NomeFile):
         # devo riempire i vettori delle coordinate
         nodoAttuale.setCoordX(int(mysplit[0]))
         nodoAttuale.setCoordY(int(mysplit[1]))
+        nodoAttuale.setIndice(i)
 
         # riempiamo il vettore della domanda
         if (int(mysplit[2])) == 0:
@@ -31,7 +32,7 @@ def LeggiIstanze(NomeFile):
         else:
             nodoAttuale.setLinehaul(int(mysplit[2]))
         Nodi.append(nodoAttuale)
-    return Nodi
+    return Nodi, camion
 
 
 def pul_split(l):
@@ -79,17 +80,6 @@ def creazioneTriple(saving, Nodi):
             triple.append(a)
     return triple
 
-""" 
-# creazione di tutti i cicli che partono dal deposito e vanno in un solo nodo
-def creazioneCicliSingoli(vecX):
-    ciclo = []
-    for i in range(1, len(vecX)):
-        a = [0, i, 0]
-        ciclo.append(a)
-    print 'ciclo=', ciclo
-    return ciclo
 
-
-"""
 
 
