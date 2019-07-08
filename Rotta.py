@@ -6,11 +6,10 @@ Created on 29 giu 2019
 
 
 class Rotta():
-    caricoAttuale = 0
-    nodi = []
-    indiciNodi = []
 
     def __init__(self, capacita, Nodo):
+        self.nodi = []
+        self.indiciNodi = []
         self.caricoAttuale = capacita
         self.capacitaCamion = capacita
         self.nodi.append(Nodo)
@@ -49,4 +48,3 @@ class Rotta():
     def appendIndiceNodo(self, indice):
         self.indiciNodi.append(indice)
 
-    

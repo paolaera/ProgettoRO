@@ -12,11 +12,37 @@ import operator
 from Rotta import *
 
 
+def creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul):
+    tripleLinehaul2 = []
+    rotte = []
+    presi = []
+    for j in range(camion):
+        nuovaRotta = Rotta(capacita, nodi[0])
+        rotte.append(nuovaRotta)
+
+    for i in range(camion):
+        condizione = True
+        while condizione:
+            if i != 0:
+                j +=1
+            else:
+                j = 0
+            if tripleLinehaul[j][1] not in presi:
+                if tripleLinehaul[j][2] not in presi:
+                    rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][1]])
+                    rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][2]])
+                    presi.append(tripleLinehaul[j][1])
+                    presi.append(tripleLinehaul[j][2])
+                    tripleLinehaul[j] = [-1, -1, -1]
+                    condizione = False
+
+    return rotte
+
+
 if __name__ == '__main__':
 
-    rotte = []
     nomeFile = raw_input("Inserire il nome dell'istanza che si vuole utilizzare da A1 a N6 \n")
-    nodi,camion = LeggiIstanze("Istanze/" + nomeFile + ".txt")
+    nodi, camion = LeggiIstanze("Istanze/" + nomeFile + ".txt")
     Saving = calcolaMatriceSavings(nodi)
     capacita = nodi[0].getBackhaul()
 
@@ -25,9 +51,8 @@ if __name__ == '__main__':
     tripleBackhaul.sort(key=operator.itemgetter(0), reverse=True)
     tripleMiste.sort(key=operator.itemgetter(0), reverse=True)
 
-    for j in range(camion):
-        nuovaRotta = Rotta(capacita, nodi[0])
-        rotte.append(nuovaRotta)
+    rotte = creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul)
+
 
 """
     for i in range(len(tripleLineh)):
@@ -53,7 +78,6 @@ if __name__ == '__main__':
     Rotte.append(nuovaRotta)
 
 """
-
 
 
 
