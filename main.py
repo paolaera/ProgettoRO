@@ -7,9 +7,8 @@ Created on 29 mag 2019
 
 from MyLib import *
 from __builtin__ import raw_input, True
-import numpy
 import operator
-from Rotta import *
+
 
 
 

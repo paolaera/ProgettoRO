@@ -61,9 +61,9 @@ def calcolaMatriceDistanze(Nodi):
 def calcolaMatriceSavings(Nodi):
     matrice = calcolaMatriceDistanze(Nodi)
     saving = []
-    for i in range(1, len(Nodi)):
+    for i in range(0, len(Nodi)):
         rig = []
-        for j in range(1, len(Nodi)):
+        for j in range(0, len(Nodi)):
             if i != j:
                 rig.append(matrice[0][i] + matrice[0][j] - matrice[i][j])
             else:
@@ -77,10 +77,8 @@ def creazioneTriple(saving, Nodi):
     tripleLinehaul = []
     tripleBackhaul = []
     tripleMiste = []
-    for i in range(1, len(Nodi) - 1):
-        for j in range(1, len(Nodi) - 1):
-            if  saving[i][j] == 0:
-                break
+    for i in range(0, len(Nodi)):
+        for j in range(0, len(Nodi)):
             a = [saving[i][j], i, j]
 
             if Nodi[i].getLinehaul() > 0 and Nodi[j].getLinehaul() > 0:
@@ -89,7 +87,6 @@ def creazioneTriple(saving, Nodi):
                 tripleBackhaul.append(a)
             else:
                 tripleMiste.append(a)
-
 
     return tripleLinehaul, tripleBackhaul, tripleMiste
 
