@@ -8,6 +8,7 @@ import math
 from math import sqrt
 import numpy
 from Nodo import Nodo
+from Rotta import *
 
 
 def LeggiIstanze(NomeFile):
@@ -91,6 +92,105 @@ def creazioneTriple(saving, Nodi):
 
 
     return tripleLinehaul, tripleBackhaul, tripleMiste
+
+def creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul):
+    tripleLinehaul2 = []
+    rotte = []
+    presi = []
+    for j in range(camion):
+        nuovaRotta = Rotta(capacita, nodi[0])
+        rotte.append(nuovaRotta)
+
+    for i in range(camion):
+        condizione = True
+        while condizione:
+            if i != 0:
+                j +=1
+            else:
+                j = 0
+            if tripleLinehaul[j][1] not in presi:
+                if tripleLinehaul[j][2] not in presi:
+                    rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][1]])
+                    rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][2]])
+                    presi.append(tripleLinehaul[j][1])
+                    presi.append(tripleLinehaul[j][2])
+                    tripleLinehaul[j] = [-1, -1, -1]
+                    condizione = False
+                    print presi
+
+    return rotte, presi
+
+def attaccaLinehaul(rotte, tripleLinehaul, nodi, presi):
+
+    while True:
+        nonAttaccati = 0
+        for i in range(len(rotte)):
+            for j in range(len(tripleLinehaul)):
+
+                if rotte[i].getLastNodeIndex() == tripleLinehaul[j][1]:
+                    if tripleLinehaul[j][2] not in presi:
+                        if rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][2]]):
+                            presi.append(tripleLinehaul[j][2])
+                            tripleLinehaul[j] = [-1, -1, -1]
+                            nonAttaccati = 1
+                            break
+                elif rotte[i].getLastNodeIndex() == tripleLinehaul[j][2]:
+                    if tripleLinehaul[j][1] not in presi:
+                        if rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][1]]):
+                            presi.append(tripleLinehaul[j][1])
+                            tripleLinehaul[j] = [-1, -1, -1]
+                            nonAttaccati = 1
+                            break
+        if nonAttaccati == 0:
+            return rotte
+
+def attaccaNodiMisti(rotte, tripleMiste, nodi, presi):
+    for i in range(len(rotte)):
+        for j in range(len(tripleMiste)):
+
+            if rotte[i].getLastNodeIndex() == tripleMiste[j][1]:
+                if tripleMiste[j][2] not in presi:
+                    if rotte[i].appendiNodoBackhaul(nodi[tripleMiste[j][2]]):
+                        presi.append(tripleMiste[j][2])
+                        tripleMiste[j] = [-1, -1, -1]
+                        break
+
+            elif rotte[i].getLastNodeIndex() == tripleMiste[j][2]:
+                if tripleMiste[j][1] not in presi:
+                    if rotte[i].appendiNodoBackhaul(nodi[tripleMiste[j][1]]):
+                        presi.append(tripleMiste[j][1])
+                        tripleMiste[j] = [-1, -1, -1]
+                        break
+    return rotte
+
+def attaccaBackHaul(rotte, tripleBackhaul, nodi, presi):
+
+    while True:
+        nonAttaccati = 0
+        for i in range(len(rotte)):
+            for j in range(len(tripleBackhaul)):
+
+                if rotte[i].getLastNodeIndex() == tripleBackhaul[j][1]:
+                    if tripleBackhaul[j][2] not in presi:
+                        if rotte[i].appendiNodoBackhaul(nodi[tripleBackhaul[j][2]]):
+                            presi.append(tripleBackhaul[j][2])
+                            tripleBackhaul[j] = [-1, -1, -1]
+                            nonAttaccati = 1
+                            break
+                elif rotte[i].getLastNodeIndex() == tripleBackhaul[j][2]:
+                    if tripleBackhaul[j][1] not in presi:
+                        if rotte[i].appendiNodoBackhaul(nodi[tripleBackhaul[j][1]]):
+                            presi.append(tripleBackhaul[j][1])
+                            tripleBackhaul[j] = [-1, -1, -1]
+                            nonAttaccati = 1
+                            break
+        if nonAttaccati == 0:
+            print presi
+
+            return rotte
+
+
+
 
 
 
