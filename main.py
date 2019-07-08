@@ -41,23 +41,28 @@ def creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul):
 
 def attaccaLinehaul(rotte, tripleLinehaul, nodi, presi):
 
-    for i in range(len(rotte)):
-        for j in range(len(tripleLinehaul)):
+    while True:
+        nonAttaccati = 0
+        for i in range(len(rotte)):
+            for j in range(len(tripleLinehaul)):
 
-            if rotte[i].getLastNodeIndex() == tripleLinehaul[j][1]:
-                if tripleLinehaul[j][2] not in presi:
-                    if rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][2]]):
-                        presi.append(tripleLinehaul[j][2])
-                        tripleLinehaul[j] = [-1, -1, -1]
-                        break
-            elif rotte[i].getLastNodeIndex() == tripleLinehaul[j][2]:
-                if tripleLinehaul[j][1] not in presi:
-                    if rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][1]]):
-                        presi.append(tripleLinehaul[j][1])
-                        tripleLinehaul[j] = [-1, -1, -1]
-                        break
+                if rotte[i].getLastNodeIndex() == tripleLinehaul[j][1]:
+                    if tripleLinehaul[j][2] not in presi:
+                        if rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][2]]):
+                            presi.append(tripleLinehaul[j][2])
+                            tripleLinehaul[j] = [-1, -1, -1]
+                            nonAttaccati = 1
+                            break
+                elif rotte[i].getLastNodeIndex() == tripleLinehaul[j][2]:
+                    if tripleLinehaul[j][1] not in presi:
+                        if rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][1]]):
+                            presi.append(tripleLinehaul[j][1])
+                            tripleLinehaul[j] = [-1, -1, -1]
+                            nonAttaccati = 1
+                            break
+        if nonAttaccati == 0:
+            return rotte
 
-    return rotte
 
 
 if __name__ == '__main__':
