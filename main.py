@@ -35,6 +35,27 @@ def creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul):
                     presi.append(tripleLinehaul[j][2])
                     tripleLinehaul[j] = [-1, -1, -1]
                     condizione = False
+                    print presi
+
+    return rotte, presi
+
+def attaccaLinehaul(rotte, tripleLinehaul, nodi, presi):
+
+    for i in range(len(rotte)):
+        for j in range(len(tripleLinehaul)):
+
+            if rotte[i].getLastNodeIndex() == tripleLinehaul[j][1]:
+                if tripleLinehaul[j][2] not in presi:
+                    if rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][2]]):
+                        presi.append(tripleLinehaul[j][2])
+                        tripleLinehaul[j] = [-1, -1, -1]
+                        break
+            elif rotte[i].getLastNodeIndex() == tripleLinehaul[j][2]:
+                if tripleLinehaul[j][1] not in presi:
+                    if rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][1]]):
+                        presi.append(tripleLinehaul[j][1])
+                        tripleLinehaul[j] = [-1, -1, -1]
+                        break
 
     return rotte
 
@@ -51,7 +72,9 @@ if __name__ == '__main__':
     tripleBackhaul.sort(key=operator.itemgetter(0), reverse=True)
     tripleMiste.sort(key=operator.itemgetter(0), reverse=True)
 
-    rotte = creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul)
+    rotte, presi = creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul)
+
+    rotte = attaccaLinehaul(rotte, tripleLinehaul, nodi, presi)
 
 
 """
