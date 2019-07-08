@@ -63,6 +63,51 @@ def attaccaLinehaul(rotte, tripleLinehaul, nodi, presi):
         if nonAttaccati == 0:
             return rotte
 
+def attaccaNodiMisti(rotte, tripleMiste, nodi, presi):
+    for i in range(len(rotte)):
+        for j in range(len(tripleMiste)):
+
+            if rotte[i].getLastNodeIndex() == tripleMiste[j][1]:
+                if tripleMiste[j][2] not in presi:
+                    if rotte[i].appendiNodoBackhaul(nodi[tripleMiste[j][2]]):
+                        presi.append(tripleMiste[j][2])
+                        tripleMiste[j] = [-1, -1, -1]
+                        break
+
+            elif rotte[i].getLastNodeIndex() == tripleMiste[j][2]:
+                if tripleMiste[j][1] not in presi:
+                    if rotte[i].appendiNodoBackhaul(nodi[tripleMiste[j][1]]):
+                        presi.append(tripleMiste[j][1])
+                        tripleMiste[j] = [-1, -1, -1]
+                        break
+    return rotte
+
+def attaccaBackHaul(rotte, tripleBackhaul, nodi, presi):
+
+    while True:
+        nonAttaccati = 0
+        for i in range(len(rotte)):
+            for j in range(len(tripleBackhaul)):
+
+                if rotte[i].getLastNodeIndex() == tripleBackhaul[j][1]:
+                    if tripleBackhaul[j][2] not in presi:
+                        if rotte[i].appendiNodoBackhaul(nodi[tripleBackhaul[j][2]]):
+                            presi.append(tripleBackhaul[j][2])
+                            tripleBackhaul[j] = [-1, -1, -1]
+                            nonAttaccati = 1
+                            break
+                elif rotte[i].getLastNodeIndex() == tripleBackhaul[j][2]:
+                    if tripleBackhaul[j][1] not in presi:
+                        if rotte[i].appendiNodoBackhaul(nodi[tripleBackhaul[j][1]]):
+                            presi.append(tripleBackhaul[j][1])
+                            tripleBackhaul[j] = [-1, -1, -1]
+                            nonAttaccati = 1
+                            break
+        if nonAttaccati == 0:
+            print presi
+
+            return rotte
+
 
 
 if __name__ == '__main__':
@@ -80,32 +125,9 @@ if __name__ == '__main__':
     rotte, presi = creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul)
 
     rotte = attaccaLinehaul(rotte, tripleLinehaul, nodi, presi)
+    rotte = attaccaNodiMisti(rotte, tripleMiste, nodi, presi)
+    rotte = attaccaBackHaul(rotte, tripleBackhaul, nodi, presi)
 
-
-"""
-    for i in range(len(tripleLineh)):
-
-        indNodAtt = triple[i][1]
-        indNodAtt2 = triple[i][2]
-        nodoAtt = Nodi[indNodAtt]
-        nodoAtt2 = Nodi[indNodAtt2]
-
-
-
-
-    #TODO for backhaul
-
-    #elimino i nodi già presi e segnato con -1
-    nuovoT = []
-    for m in range(len(triple)):
-        if not (triple[m][0] == -1):
-            nuovoT.append(triple[m])
-
-    triple = nuovoT
-
-    Rotte.append(nuovaRotta)
-
-"""
 
 
 
