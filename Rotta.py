@@ -48,3 +48,5 @@ class Rotta():
 
     def appendIndiceNodo(self, indice):
         self.indiciNodi.append(indice)
+
+    

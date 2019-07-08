@@ -7,7 +7,7 @@ Created on 29 mag 2019
 import math
 from math import sqrt
 import numpy
-from Nodo import *
+from Nodo import Nodo
 
 
 def LeggiIstanze(NomeFile):
@@ -73,12 +73,24 @@ def calcolaMatriceSavings(Nodi):
 
 
 def creazioneTriple(saving, Nodi):
-    triple = []
-    for i in range(len(Nodi) - 1):
-        for j in range(len(Nodi) - 1):
+    tripleLinehaul = []
+    tripleBackhaul = []
+    tripleMiste = []
+    for i in range(1, len(Nodi) - 1):
+        for j in range(1, len(Nodi) - 1):
+            if  saving[i][j] == 0:
+                break
             a = [saving[i][j], i, j]
-            triple.append(a)
-    return triple
+
+            if Nodi[i].getLinehaul() > 0 and Nodi[j].getLinehaul() > 0:
+                tripleLinehaul.append(a)
+            elif Nodi[i].getBackhaul() > 0 and Nodi[j].getBackhaul() > 0:
+                tripleBackhaul.append(a)
+            else:
+                tripleMiste.append(a)
+
+
+    return tripleLinehaul, tripleBackhaul, tripleMiste
 
 
 
