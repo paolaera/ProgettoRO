@@ -112,7 +112,6 @@ def creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul):
                     presi.append(tripleLinehaul[j][2])
                     tripleLinehaul[j] = [-1, -1, -1]
                     condizione = False
-                    print presi
 
     return rotte, presi
 
@@ -181,8 +180,6 @@ def attaccaBackHaul(rotte, tripleBackhaul, nodi, presi):
                             nonAttaccati = 1
                             break
         if nonAttaccati == 0:
-            print presi
-
             return rotte
 
 

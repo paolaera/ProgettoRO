@@ -14,6 +14,7 @@ class Rotta():
         self.capacitaCamion = capacita
         self.nodi.append(Nodo)
         self.indiciNodi.append(Nodo.getIndice())
+        self.costoTotale = 0
 
 
     def appendiNodoLinehaul(self,Nodo):
@@ -45,6 +46,7 @@ class Rotta():
     def getIndiciNodi(self):
         return self.indiciNodi
 
+
     def appendIndiceNodo(self, indice):
         self.indiciNodi.append(indice)
 
@@ -54,3 +56,16 @@ class Rotta():
     def appendiNodoDeposito(self, Nodo):
         self.nodi.append(Nodo)
         self.appendIndiceNodo(0)
+
+    def calcolaCostoRotta(self, matrice):
+        costo = 0
+        for i in range(0, len(self.nodi)-1):
+            costo = costo + matrice[self.nodi[i].getIndice()][self.nodi[i+1].getIndice()]
+        return costo
+"""
+    def setCostoTotale(self,costo):
+        self.costoTotale = costo
+
+    def getCostoTotale(self):
+        return self.costoTotale
+"""
