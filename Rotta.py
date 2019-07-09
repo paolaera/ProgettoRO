@@ -50,3 +50,7 @@ class Rotta():
 
     def getLastNodeIndex(self):
         return self.nodi[-1].getIndice()
+
+    def appendiNodoDeposito(self, Nodo):
+        self.nodi.append(Nodo)
+        self.appendIndiceNodo(0)

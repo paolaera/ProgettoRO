@@ -188,7 +188,3 @@ def attaccaBackHaul(rotte, tripleBackhaul, nodi, presi):
 
 
 
-
-
-
-

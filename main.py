@@ -11,7 +11,6 @@ import operator
 
 
 
-
 if __name__ == '__main__':
 
     nomeFile = raw_input("Inserire il nome dell'istanza che si vuole utilizzare da A1 a N6 \n")
@@ -29,6 +28,11 @@ if __name__ == '__main__':
     rotte = attaccaLinehaul(rotte, tripleLinehaul, nodi, presi)
     rotte = attaccaNodiMisti(rotte, tripleMiste, nodi, presi)
     rotte = attaccaBackHaul(rotte, tripleBackhaul, nodi, presi)
+
+    for i in range(len(rotte)):
+        rotte[i].appendiNodoDeposito(nodi[0])
+
+
 
 
 
