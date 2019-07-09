@@ -91,7 +91,6 @@ def creazioneTriple(saving, Nodi):
     return tripleLinehaul, tripleBackhaul, tripleMiste
 
 def creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul):
-    tripleLinehaul2 = []
     rotte = []
     presi = []
     for j in range(camion):
