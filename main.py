@@ -22,6 +22,7 @@ if __name__ == '__main__':
     capacita = nodi[0].getBackhaul()
     costi = []
 
+
     #selezione delle triple dalla matrice dei Saving
     tripleLinehaul, tripleBackhaul, tripleMiste = creazioneTriple(Saving, nodi)
     tripleLinehaul.sort(key=operator.itemgetter(0), reverse=True)
@@ -30,10 +31,11 @@ if __name__ == '__main__':
 
     #Inizio creazione delle rotte con inizio conteggio tempo
     start = time.time()
-    rotte, presi = creazioneRotteIniziali(camion, capacita, nodi, tripleLinehaul)
-    rotte = attaccaLinehaul(rotte, tripleLinehaul, nodi, presi)
-    rotte = attaccaNodiMisti(rotte, tripleMiste, nodi, presi)
-    rotte = attaccaBackHaul(rotte, tripleBackhaul, nodi, presi)
+    rotteLinehaul, presiLinehaul = creazioneRotteInizialiLinehaul(camion, capacita, nodi, tripleLinehaul)
+    rotteLinehaul = attaccaLinehaul(rotteLinehaul, tripleLinehaul, nodi, presiLinehaul)
+    rotteBackhaul, presiBackhaul = creazioneRotteInizialiBackhaul(camion, capacita, nodi, tripleBackhaul)
+    rotteBackhaul = attaccaBackHaul(rotteBackhaul, tripleBackhaul, nodi, presiBackhaul)
+    rotte, presina = incollaMentoRotte(rotteLinehaul, rotteBackhaul, tripleMiste,nodi)
 
     for i in range(len(rotte)):
         rotte[i].appendiNodoDeposito(nodi[0])

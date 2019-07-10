@@ -10,17 +10,19 @@ class Rotta():
     def __init__(self, capacita, Nodo):
         self.nodi = []
         self.indiciNodi = []
-        self.caricoAttuale = capacita
+        self.caricoAttualeLinehaul = capacita
+        self.caricoAttualeBackhaul = 0
         self.capacitaCamion = capacita
         self.nodi.append(Nodo)
         self.indiciNodi.append(Nodo.getIndice())
         self.costoTotale = 0
 
 
+
     def appendiNodoLinehaul(self,Nodo):
-        if Nodo.getLinehaul() > 0 and self.caricoAttuale > Nodo.getLinehaul() and self.caricoAttuale - Nodo.getLinehaul() > 0:
+        if Nodo.getLinehaul() > 0 and self.caricoAttualeLinehaul > Nodo.getLinehaul() and self.caricoAttualeLinehaul - Nodo.getLinehaul() > 0:
             self.nodi.append(Nodo)
-            self.caricoAttuale = self.caricoAttuale - Nodo.getLinehaul()
+            self.caricoAttualeLinehaul = self.caricoAttualeLinehaul - Nodo.getLinehaul()
             self.appendIndiceNodo(Nodo.getIndice())
             return True
 
@@ -28,9 +30,9 @@ class Rotta():
 
     def appendiNodoBackhaul(self, Nodo):
 
-        if Nodo.getBackhaul() > 0 and self.caricoAttuale + Nodo.getBackhaul() < self.capacitaCamion:
+        if Nodo.getBackhaul() > 0 and self.caricoAttualeBackhaul + Nodo.getBackhaul() < self.capacitaCamion:
             self.nodi.append(Nodo)
-            self.caricoAttuale = self.caricoAttuale + Nodo.getBackhaul()
+            self.caricoAttualeBackhaul = self.caricoAttualeBackhaul + Nodo.getBackhaul()
             self.appendIndiceNodo(Nodo.getIndice())
             return True
 
@@ -62,3 +64,6 @@ class Rotta():
         for i in range(0, len(self.nodi)-1):
             costo = costo + matrice[self.nodi[i].getIndice()][self.nodi[i+1].getIndice()]
         return costo
+
+    def getRimanenza(self):
+        return self.caricoAttualeLinehaul

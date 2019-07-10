@@ -90,9 +90,9 @@ def creazioneTriple(saving, Nodi):
 
     return tripleLinehaul, tripleBackhaul, tripleMiste
 
-def creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul):
+def creazioneRotteInizialiLinehaul(camion, capacita, nodi,tripleLinehaul):
     rotte = []
-    presi = []
+    presiLinehaul = []
     for j in range(camion):
         nuovaRotta = Rotta(capacita, nodi[0])
         rotte.append(nuovaRotta)
@@ -104,18 +104,18 @@ def creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul):
                 j +=1
             else:
                 j = 0
-            if tripleLinehaul[j][1] not in presi:
-                if tripleLinehaul[j][2] not in presi:
+            if tripleLinehaul[j][1] not in presiLinehaul:
+                if tripleLinehaul[j][2] not in presiLinehaul:
                     rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][1]])
                     rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][2]])
-                    presi.append(tripleLinehaul[j][1])
-                    presi.append(tripleLinehaul[j][2])
+                    presiLinehaul.append(tripleLinehaul[j][1])
+                    presiLinehaul.append(tripleLinehaul[j][2])
                     tripleLinehaul[j] = [-1, -1, -1]
                     condizione = False
 
-    return rotte, presi
+    return rotte,presiLinehaul
 
-def attaccaLinehaul(rotte, tripleLinehaul, nodi, presi):
+def attaccaLinehaul(rotte, tripleLinehaul, nodi, presiLinehaul):
 
     while True:
         nonAttaccati = 0
@@ -123,23 +123,23 @@ def attaccaLinehaul(rotte, tripleLinehaul, nodi, presi):
             for j in range(len(tripleLinehaul)):
 
                 if rotte[i].getLastNodeIndex() == tripleLinehaul[j][1]:
-                    if tripleLinehaul[j][2] not in presi:
+                    if tripleLinehaul[j][2] not in presiLinehaul:
                         if rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][2]]):
-                            presi.append(tripleLinehaul[j][2])
+                            presiLinehaul.append(tripleLinehaul[j][2])
                             tripleLinehaul[j] = [-1, -1, -1]
                             nonAttaccati = 1
                             break
                 elif rotte[i].getLastNodeIndex() == tripleLinehaul[j][2]:
-                    if tripleLinehaul[j][1] not in presi:
+                    if tripleLinehaul[j][1] not in presiLinehaul:
                         if rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][1]]):
-                            presi.append(tripleLinehaul[j][1])
+                            presiLinehaul.append(tripleLinehaul[j][1])
                             tripleLinehaul[j] = [-1, -1, -1]
                             nonAttaccati = 1
                             break
         if nonAttaccati == 0:
             return rotte
-
-def attaccaNodiMisti(rotte, tripleMiste, nodi, presi):
+"""
+def attaccaNodiMisti(rotte, tripleMiste, nodi, presiLinehaul):
     for i in range(len(rotte)):
         for j in range(len(tripleMiste)):
 
@@ -157,8 +157,8 @@ def attaccaNodiMisti(rotte, tripleMiste, nodi, presi):
                         tripleMiste[j] = [-1, -1, -1]
                         break
     return rotte
-
-def attaccaBackHaul(rotte, tripleBackhaul, nodi, presi):
+"""
+def attaccaBackHaul(rotte, tripleBackhaul, nodi,presiBackhaul):
 
     while True:
         nonAttaccati = 0
@@ -166,16 +166,16 @@ def attaccaBackHaul(rotte, tripleBackhaul, nodi, presi):
             for j in range(len(tripleBackhaul)):
 
                 if rotte[i].getLastNodeIndex() == tripleBackhaul[j][1]:
-                    if tripleBackhaul[j][2] not in presi:
+                    if tripleBackhaul[j][2] not in presiBackhaul:
                         if rotte[i].appendiNodoBackhaul(nodi[tripleBackhaul[j][2]]):
-                            presi.append(tripleBackhaul[j][2])
+                            presiBackhaul.append(tripleBackhaul[j][2])
                             tripleBackhaul[j] = [-1, -1, -1]
                             nonAttaccati = 1
                             break
                 elif rotte[i].getLastNodeIndex() == tripleBackhaul[j][2]:
-                    if tripleBackhaul[j][1] not in presi:
+                    if tripleBackhaul[j][1] not in presiBackhaul:
                         if rotte[i].appendiNodoBackhaul(nodi[tripleBackhaul[j][1]]):
-                            presi.append(tripleBackhaul[j][1])
+                            presiBackhaul.append(tripleBackhaul[j][1])
                             tripleBackhaul[j] = [-1, -1, -1]
                             nonAttaccati = 1
                             break
@@ -198,11 +198,66 @@ def importBestSolution(nomeFile):
     bestSolution = (float(bestSolution))
     return bestSolution
 
+def calcolaErroreAssoluto(costo,bestSolution):
+    errAss = (costo - bestSolution)
+    return errAss
+
 def calcolaErroreRelativo(costo,bestSolution):
-    errRel = costo - bestSolution
+    errRel = (costo - bestSolution)/(math.fabs(bestSolution))
     return errRel
 
-def calcolaErroreAssoluto(costo,bestSolution):
-    errAss = (costo - bestSolution)/(math.fabs(bestSolution))
-    return errAss
+def creazioneRotteInizialiBackhaul(camion, capacita, nodi,tripleBackhaul):
+    rotte = []
+    presiBackhaul = []
+    rimanenza = []
+    for j in range(camion):
+        nuovaRotta = Rotta(capacita, nodi[0])
+        rotte.append(nuovaRotta)
+
+    for i in range(camion):
+        condizione = True
+        while condizione:
+            if i != 0:
+                j += 1
+            else:
+                j = 0
+            if tripleBackhaul[j][1] not in presiBackhaul:
+                if tripleBackhaul[j][2] not in presiBackhaul:
+                    rotte[i].appendiNodoBackhaul(nodi[tripleBackhaul[j][1]])
+                    rotte[i].appendiNodoBackhaul(nodi[tripleBackhaul[j][2]])
+                    presiBackhaul.append(tripleBackhaul[j][1])
+                    presiBackhaul.append(tripleBackhaul[j][2])
+                    tripleBackhaul[j] = [-1, -1, -1]
+                    condizione = False
+    return rotte, presiBackhaul
+
+def incollaMentoRotte(rotteLinehaul, rotteBackhaul,tripleMiste, nodi):
+    rotte = []
+    presi =[]
+    for j in range(len(rotteLinehaul)):
+        nuovaRotta = Rotta(rotteLinehaul[0].capacitaCamion, nodi[0])
+        rotte.append(nuovaRotta)
+
+    for j in range(len(rotteLinehaul)):
+        for m in range(len(rotteBackhaul)):
+            for i in range(len(tripleMiste)):
+                if tripleMiste[i][1] == rotteLinehaul[j].getIndiciNodi()[-1] and tripleMiste[i][2] == rotteBackhaul[m].getIndiciNodi()[1] :
+                    if rotteLinehaul[j].getRimanenza() <= rotteBackhaul[m].caricoAttualeBackhaul:
+                        rotte[j].nodi = rotteLinehaul[j].nodi + rotteBackhaul[m].nodi[1:]
+                        rotte[j].indiciNodi = rotteLinehaul[j].getIndiciNodi() + rotteBackhaul[m].getIndiciNodi()[1:]
+                        tripleMiste[i] = [-1, -1, -1]
+                        presi += rotte[j].getIndiciNodi()
+                    break
+
+                elif tripleMiste[i][2] == rotteLinehaul[j].getIndiciNodi()[-1] and tripleMiste[i][1] == rotteBackhaul[m].getIndiciNodi()[1] :
+                    if rotteLinehaul[j].getRimanenza() <= rotteBackhaul[m].caricoAttualeBackhaul:
+                        rotte[j].nodi = rotteLinehaul[j].nodi + rotteBackhaul[m].nodi[1:]
+                        rotte[j].indiciNodi = rotteLinehaul[j].getIndiciNodi() + rotteBackhaul[m].getIndiciNodi()[1:]
+                        tripleMiste[i] = [-1, -1, -1]
+                        presi += rotte[j].getIndiciNodi()
+
+                    break
+
+    return rotte, presi
+
 
