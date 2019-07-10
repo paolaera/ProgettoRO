@@ -22,43 +22,74 @@ if __name__ == '__main__':
     capacita = nodi[0].getBackhaul()
     costi = []
 
+    if nomeFile.startswith("I"):
+        #selezione delle triple dalla matrice dei Saving
+        tripleLinehaul, tripleBackhaul, tripleMiste = creazioneTriple(Saving, nodi)
+        tripleLinehaul.sort(key=operator.itemgetter(0), reverse=True)
+        tripleBackhaul.sort(key=operator.itemgetter(0), reverse=True)
+        tripleMiste.sort(key=operator.itemgetter(0), reverse=True)
 
-    #selezione delle triple dalla matrice dei Saving
-    tripleLinehaul, tripleBackhaul, tripleMiste = creazioneTriple(Saving, nodi)
-    tripleLinehaul.sort(key=operator.itemgetter(0), reverse=True)
-    tripleBackhaul.sort(key=operator.itemgetter(0), reverse=True)
-    tripleMiste.sort(key=operator.itemgetter(0), reverse=True)
+        #Inizio creazione delle rotte con inizio conteggio tempo
+        start = time.time()
+        rotteLinehaul, presiLinehaul = creazioneRotteInizialiLinehaul(camion, capacita, nodi, tripleLinehaul)
+        rotteLinehaul = attaccaLinehaul(rotteLinehaul, tripleLinehaul, nodi, presiLinehaul)
+        rotteBackhaul, presiBackhaul = creazioneRotteInizialiBackhaul(camion, capacita, nodi, tripleBackhaul)
+        rotteBackhaul = attaccaBackHaul(rotteBackhaul, tripleBackhaul, nodi, presiBackhaul)
+        rotte, presina = incollaMentoRotte(rotteLinehaul, rotteBackhaul, tripleMiste,nodi)
 
-    #Inizio creazione delle rotte con inizio conteggio tempo
-    start = time.time()
-    rotteLinehaul, presiLinehaul = creazioneRotteInizialiLinehaul(camion, capacita, nodi, tripleLinehaul)
-    rotteLinehaul = attaccaLinehaul(rotteLinehaul, tripleLinehaul, nodi, presiLinehaul)
-    rotteBackhaul, presiBackhaul = creazioneRotteInizialiBackhaul(camion, capacita, nodi, tripleBackhaul)
-    rotteBackhaul = attaccaBackHaul(rotteBackhaul, tripleBackhaul, nodi, presiBackhaul)
-    rotte, presina = incollaMentoRotte(rotteLinehaul, rotteBackhaul, tripleMiste,nodi)
+        presina = duplicate(presina)
+        indiciNodi = getIndiciNodiLista(nodi)
 
-    for i in range(len(rotte)):
-        rotte[i].appendiNodoDeposito(nodi[0])
+        presina.sort()
+        indiciNodi.sort()
 
-    end = time.time()
+        if presina == indiciNodi:
+            print 'tutti i nodi sono presenti'
+        else:
+            print 'stai facendo cagate'
 
-    #calcolo del costo di ogni rotta e somma di tutti i costi
-    for i in range(len(rotte)):
-        costi.append(rotte[i].calcolaCostoRotta(matrice))
+        for i in range(len(rotte)):
+            rotte[i].appendiNodoDeposito(nodi[0])
 
-    costo = sum(costi)
-    tempo = end -start
 
-    #import soluzione ottima
-    bestSolution = importBestSolution("/home/paola/PycharmProjects/Progetto/Best__Solutions/RPA_Solutions/Detailed_Solution_" + nomeFile + ".txt")
+        end = time.time()
 
-    #errore relativo e assoluto
-    erroreRelativo = calcolaErroreRelativo(costo, bestSolution)
-    erroreAssoluto = calcolaErroreAssoluto(costo, bestSolution)
+        #calcolo del costo di ogni rotta e somma di tutti i costi
+        for i in range(len(rotte)):
+            costi.append(rotte[i].calcolaCostoRotta(matrice))
 
-    print 'errore relativo:', erroreRelativo
-    print 'errore assoluto:', erroreAssoluto
-    print 'tempo in secondi:', tempo
+        costo = sum(costi)
+        tempo = end -start
+
+        # import soluzione ottima
+        bestSolution = importBestSolution(
+            "/home/paola/PycharmProjects/Progetto/Best__Solutions/RPA_Solutions/Detailed_Solution_" + nomeFile + ".txt")
+
+        # errore relativo e assoluto
+        erroreRelativo = calcolaErroreRelativo(costo, bestSolution)
+        erroreAssoluto = calcolaErroreAssoluto(costo, bestSolution)
+
+        print 'errore relativo:', erroreRelativo
+        print 'errore assoluto:', erroreAssoluto
+        print 'tempo in secondi:', tempo
+
+    else:
+        tripleLinehaul, tripleBackhaul, tripleMiste = creazioneTriple(Saving, nodi)
+        tripleLinehaul.sort(key=operator.itemgetter(0), reverse=True)
+        tripleBackhaul.sort(key=operator.itemgetter(0), reverse=True)
+        tripleMiste.sort(key=operator.itemgetter(0), reverse=True)
+
+        rotte, presi = creazioneRotteIniziali(camion, capacita, nodi, tripleLinehaul)
+
+        start = time.time()
+
+        rotte = attaccaLinehaul(rotte, tripleLinehaul, nodi, presi)
+        rotte = attaccaNodiMisti(rotte, tripleMiste, nodi, presi)
+        rotte = attaccaBackHaul(rotte, tripleBackhaul, nodi, presi)
+
+        end = time.time()
+        tempo = end - start
+        print 'tempo in secondi:', tempo
 
 
 

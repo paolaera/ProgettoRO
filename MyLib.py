@@ -115,6 +115,32 @@ def creazioneRotteInizialiLinehaul(camion, capacita, nodi,tripleLinehaul):
 
     return rotte,presiLinehaul
 
+
+def creazioneRotteIniziali(camion, capacita, nodi,tripleLinehaul):
+    rotte = []
+    presi = []
+    for j in range(camion):
+        nuovaRotta = Rotta(capacita, nodi[0])
+        rotte.append(nuovaRotta)
+
+    for i in range(camion):
+        condizione = True
+        while condizione:
+            if i != 0:
+                j +=1
+            else:
+                j = 0
+            if tripleLinehaul[j][1] not in presi:
+                if tripleLinehaul[j][2] not in presi:
+                    rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][1]])
+                    rotte[i].appendiNodoLinehaul(nodi[tripleLinehaul[j][2]])
+                    presi.append(tripleLinehaul[j][1])
+                    presi.append(tripleLinehaul[j][2])
+                    tripleLinehaul[j] = [-1, -1, -1]
+                    condizione = False
+
+    return rotte, presi
+
 def attaccaLinehaul(rotte, tripleLinehaul, nodi, presiLinehaul):
 
     while True:
@@ -138,8 +164,8 @@ def attaccaLinehaul(rotte, tripleLinehaul, nodi, presiLinehaul):
                             break
         if nonAttaccati == 0:
             return rotte
-"""
-def attaccaNodiMisti(rotte, tripleMiste, nodi, presiLinehaul):
+
+def attaccaNodiMisti(rotte, tripleMiste, nodi, presi):
     for i in range(len(rotte)):
         for j in range(len(tripleMiste)):
 
@@ -157,7 +183,7 @@ def attaccaNodiMisti(rotte, tripleMiste, nodi, presiLinehaul):
                         tripleMiste[j] = [-1, -1, -1]
                         break
     return rotte
-"""
+
 def attaccaBackHaul(rotte, tripleBackhaul, nodi,presiBackhaul):
 
     while True:
@@ -221,6 +247,7 @@ def creazioneRotteInizialiBackhaul(camion, capacita, nodi,tripleBackhaul):
                 j += 1
             else:
                 j = 0
+            #print len(tripleBackhaul), j, camion, i
             if tripleBackhaul[j][1] not in presiBackhaul:
                 if tripleBackhaul[j][2] not in presiBackhaul:
                     rotte[i].appendiNodoBackhaul(nodi[tripleBackhaul[j][1]])
@@ -260,4 +287,15 @@ def incollaMentoRotte(rotteLinehaul, rotteBackhaul,tripleMiste, nodi):
 
     return rotte, presi
 
+def duplicate(items):
+    unique = []
+    for item in items:
+        if item not in unique:
+            unique.append(item)
+    return unique
 
+def getIndiciNodiLista(nodi):
+    indici = []
+    for i in range(len(nodi)):
+        indici.append(nodi[i].getIndice())
+    return indici
