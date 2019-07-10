@@ -62,10 +62,3 @@ class Rotta():
         for i in range(0, len(self.nodi)-1):
             costo = costo + matrice[self.nodi[i].getIndice()][self.nodi[i+1].getIndice()]
         return costo
-"""
-    def setCostoTotale(self,costo):
-        self.costoTotale = costo
-
-    def getCostoTotale(self):
-        return self.costoTotale
-"""

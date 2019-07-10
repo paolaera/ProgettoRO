@@ -182,5 +182,27 @@ def attaccaBackHaul(rotte, tripleBackhaul, nodi, presi):
         if nonAttaccati == 0:
             return rotte
 
+def importBestSolution(nomeFile):
+    istanza = open(nomeFile, "r")
+    istanza.readline()
+    istanza.readline()
+    istanza.readline()
+    istanza.readline()
+    istanza.readline()
+    istanza.readline()
+    istanza.readline()
+    istanza.readline()
+    bestSolution = istanza.readline()
+    bestSolution = bestSolution.replace("Total Cost = ", "")
+    bestSolution = bestSolution.replace("\r\n", "")
+    bestSolution = (float(bestSolution))
+    return bestSolution
 
+def calcolaErroreRelativo(costo,bestSolution):
+    errRel = costo - bestSolution
+    return errRel
+
+def calcolaErroreAssoluto(costo,bestSolution):
+    errAss = (costo - bestSolution)/(math.fabs(bestSolution))
+    return errAss
 
