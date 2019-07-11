@@ -258,6 +258,7 @@ def creazioneRotteInizialiBackhaul(camion, capacita, nodi,tripleBackhaul):
                     condizione = False
     return rotte, presiBackhaul
 
+
 def incollaMentoRotte(rotteLinehaul, rotteBackhaul,tripleMiste, nodi):
     rotte = []
     presi =[]
