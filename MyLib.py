@@ -300,3 +300,19 @@ def getIndiciNodiLista(nodi):
     for i in range(len(nodi)):
         indici.append(nodi[i].getIndice())
     return indici
+
+def rifaiLinehaul(camion, listaNodi):
+
+    i = 0
+    presi = []
+
+    while i < len(listaNodi):
+
+        for j in range(len(camion)):
+
+            if i < len(listaNodi):
+                if camion[j].appendiNodoLinehaul(listaNodi[i]):
+                    presi.append(listaNodi[i].getIndice())
+                    i += 1
+    presi.sort()
+    return camion, presi

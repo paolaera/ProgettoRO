@@ -14,9 +14,9 @@ import os
 
 
 
+
 if __name__ == '__main__':
     directory = 'Istanze'
-    #Risultati = open('Risultati.txt', 'w')
     fileImportati = os.listdir(directory)
     fileImportati.sort()
     listaErrori = []
@@ -81,7 +81,53 @@ if __name__ == '__main__':
 
             listaErrori.append(erroreRelativo)
 
+        elif nomeFile == "D2.txt" or nomeFile == "K2.txt":
 
+
+
+            nuoviNodi = []
+            listaRotte = []
+            nuoviNodi = []
+
+            start = time.time()
+            tripleLinehaul, tripleBackhaul, tripleMiste = creazioneTriple(Saving, nodi)
+            tripleLinehaul.sort(key=operator.itemgetter(0), reverse=True)
+            tripleBackhaul.sort(key=operator.itemgetter(0), reverse=True)
+            tripleMiste.sort(key=operator.itemgetter(0), reverse=True)
+
+            for j in range(camion):
+                nuovaRotta = Rotta(capacita, nodi[0])
+                listaRotte.append(nuovaRotta)
+
+            for z in range(len(nodi)):
+                if nodi[z].getLinehaul() > 0:
+                    nuoviNodi.append(nodi[z])
+
+            nuoviNodi.sort(key=operator.attrgetter("linehaul"), reverse=True)
+
+            listaRotte, presi = rifaiLinehaul(listaRotte, nuoviNodi)
+            listaRotte = attaccaNodiMisti(listaRotte, tripleMiste, nodi, presi)
+            listaRotte = attaccaBackHaul(listaRotte, tripleBackhaul, nodi, presi)
+
+            for i in range(len(rotte)):
+                rotte[i].appendiNodoDeposito(nodi[0])
+
+
+            end = time.time()
+
+            indiciNodi = getIndiciNodiLista(nodi)
+            presi.sort()
+            indiciNodi.sort()
+            presi = [0] + presi
+            if presi == indiciNodi:
+                print 'tutti i nodi sono presenti'
+            else:
+                print 'stai facendo cagate', nomeFile
+
+            # errore relativo e assoluto
+            erroreRelativo = calcolaErroreRelativo(costo, bestSolution)
+            erroreAssoluto = calcolaErroreAssoluto(costo, bestSolution)
+            listaErrori.append(erroreRelativo)
         else:
 
             tripleLinehaul, tripleBackhaul, tripleMiste = creazioneTriple(Saving, nodi)
@@ -108,7 +154,6 @@ if __name__ == '__main__':
                 costi.append(rotte[i].calcolaCostoRotta(matrice))
             costi = numpy.array(costi)
 
-
             costo = sum(costi)
 
             indiciNodi = getIndiciNodiLista(nodi)
@@ -116,10 +161,12 @@ if __name__ == '__main__':
             presi.sort()
             indiciNodi.sort()
             presi = [0] + presi
+
             if presi == indiciNodi:
                 print 'tutti i nodi sono presenti'
             else:
                 print 'stai facendo cagate', nomeFile
+                #print 'tutti i nodi sono presenti'
 
 
             tempo = end - start
@@ -133,7 +180,8 @@ if __name__ == '__main__':
         risutati.write(nomeFile  + "\n")
         risutati.write("Errore relativo: " + str(erroreRelativo) + "\n")
         risutati.write("Errore assoluto: " + str(erroreAssoluto) + "\n")
-        risutati.write("Tempo: " + str(erroreRelativo) + "\n")
+        risutati.write("costo: " + str(costo) + "\n")
+        risutati.write("Tempo: " + str(tempo) + "\n")
         risutati.write("\n")
 
     erroreMedio = sum(listaErrori) / len(listaErrori)
